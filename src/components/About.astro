@@ -1,0 +1,204 @@
+---
+const teamImage =
+  "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1400&q=70";
+const workImage =
+  "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=900&q=70";
+
+const steps = [
+  { label: "Assess", desc: "Site survey & requirements" },
+  { label: "Design", desc: "Engineering & specification" },
+  { label: "Supply", desc: "Procurement & logistics" },
+  { label: "Install", desc: "Construction & erection" },
+  { label: "Commission", desc: "Testing & energization" },
+  { label: "Maintain", desc: "Support across asset life" },
+];
+---
+
+<section class="section about" id="about">
+  <div class="container about-layout">
+    <div class="about-media" data-reveal>
+      <img
+        class="about-img-main"
+        src={teamImage}
+        alt="Engineering team reviewing works on a construction site"
+        loading="lazy"
+      />
+      <img
+        class="about-img-inset"
+        src={workImage}
+        alt="Electrical technician testing equipment on a panel"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="about-content" data-reveal>
+      <span class="kicker">Who we are</span>
+      <h2 class="section-title">Disciplined engineering. Dependable power.</h2>
+      <p class="section-lede">
+        Caxten Engineering is a specialist electrical contractor focused on
+        high and medium voltage systems. We take single-point responsibility
+        for the facilities our clients depend on — delivering to standard,
+        on programme, and above all, safely.
+      </p>
+      <ul class="about-points">
+        <li>Safety-first culture with permit-to-work discipline on every site</li>
+        <li>Qualified HV-authorised engineers and test technicians</li>
+        <li>Full documentation: test records, as-builts and O&amp;M manuals</li>
+        <li>Works delivered to IEC standards and utility grid codes</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container process" aria-label="Delivery process">
+    <div class="process-track" aria-hidden="true">
+      <span class="process-line" data-process-line></span>
+    </div>
+    <ol class="process-steps">
+      {
+        steps.map((s, i) => (
+          <li class="process-step" data-reveal>
+            <span class="step-num">{String(i + 1).padStart(2, "0")}</span>
+            <span class="step-label">{s.label}</span>
+            <span class="step-desc">{s.desc}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .about-layout {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: clamp(2.5rem, 6vw, 5.5rem);
+    align-items: center;
+  }
+
+  .about-media {
+    position: relative;
+    padding-bottom: 3.5rem;
+  }
+
+  .about-img-main {
+    width: 100%;
+    aspect-ratio: 4 / 3.4;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+  }
+
+  .about-img-inset {
+    position: absolute;
+    right: -1rem;
+    bottom: 0;
+    width: 46%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 5px solid var(--bg);
+    box-shadow: var(--card-shadow);
+  }
+
+  .about-points {
+    margin: 2rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .about-points li {
+    position: relative;
+    padding-left: 1.9rem;
+    font-size: 0.98rem;
+  }
+
+  .about-points li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.42em;
+    width: 0.95rem;
+    height: 0.55rem;
+    border-left: 2.5px solid var(--blue);
+    border-bottom: 2.5px solid var(--blue);
+    transform: rotate(-45deg);
+  }
+
+  /* Delivery process ------------------------------------------------ */
+
+  .process {
+    margin-top: clamp(4rem, 8vw, 6.5rem);
+  }
+
+  .process-track {
+    height: 2px;
+    background: var(--line-soft);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .process-line {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, var(--blue), var(--amber));
+    transform-origin: left center;
+  }
+
+  .js .process-line {
+    transform: scaleX(0);
+  }
+
+  .js.reduced-motion .process-line {
+    transform: none;
+  }
+
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1.2rem;
+    margin: 1.6rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .process-step {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .step-num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--blue);
+  }
+
+  .step-label {
+    font-weight: 600;
+    color: var(--heading);
+  }
+
+  .step-desc {
+    font-size: 0.83rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 900px) {
+    .about-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .process-steps {
+      grid-template-columns: repeat(3, 1fr);
+      row-gap: 2rem;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .process-steps {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

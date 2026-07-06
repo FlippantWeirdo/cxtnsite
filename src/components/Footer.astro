@@ -1,0 +1,140 @@
+---
+import Logo from "./Logo.astro";
+import { services } from "../data/services";
+
+const year = new Date().getFullYear();
+
+const siteLinks = [
+  { href: "/#services", label: "Services" },
+  { href: "/#capabilities", label: "Capabilities" },
+  { href: "/#about", label: "About" },
+  { href: "/#sectors", label: "Sectors" },
+  { href: "/contact", label: "Contact" },
+];
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <Logo />
+      <p>
+        Specialist contractor for high &amp; medium voltage electrical
+        facilities — 0.4kV, 11kV, 33kV &amp; 66kV.
+      </p>
+    </div>
+
+    <nav class="footer-col" aria-label="Services">
+      <h3>Services</h3>
+      <ul>
+        {
+          services.map((s) => (
+            <li>
+              <a href={`/services/${s.slug}`}>{s.title}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <nav class="footer-col" aria-label="Site">
+      <h3>Company</h3>
+      <ul>
+        {siteLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="footer-col">
+      <h3>Contact</h3>
+      <ul>
+        <li><a href="mailto:info@caxten.com">info@caxten.com</a></li>
+        <li><a href="tel:+2340000000000">+234 (0) 000 000 0000</a></li>
+        <li>Head office address, City, Country</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <p>© {year} Caxten Engineering. All rights reserved.</p>
+    <p class="footer-tag">Powering critical infrastructure, safely.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line-soft);
+    background: var(--surface);
+    transition: background-color 0.35s ease;
+    padding-top: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+    gap: 2.5rem;
+    padding-bottom: 3rem;
+  }
+
+  .footer-brand p {
+    margin-top: 1.2rem;
+    max-width: 34ch;
+    font-size: 0.92rem;
+    color: var(--text-muted);
+  }
+
+  .footer-col h3 {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 1.1rem;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.65rem;
+    font-size: 0.92rem;
+    color: var(--text-muted);
+  }
+
+  .footer-col a {
+    transition: color 0.2s ease;
+  }
+
+  .footer-col a:hover {
+    color: var(--blue);
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-block: 1.4rem;
+    border-top: 1px solid var(--line-soft);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .footer-tag {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+  }
+
+  @media (max-width: 900px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

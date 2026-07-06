@@ -1,0 +1,135 @@
+---
+import { services } from "../data/services";
+---
+
+<section class="section services" id="services">
+  <div class="container">
+    <div data-reveal>
+      <span class="kicker">What we do</span>
+      <h2 class="section-title">A complete lifecycle service for electrical facilities</h2>
+      <p class="section-lede">
+        From procurement to energization and beyond — one accountable partner
+        across the full life of your electrical infrastructure.
+      </p>
+    </div>
+
+    <div class="services-grid">
+      {
+        services.map((s, i) => (
+          <a class="service-card" href={`/services/${s.slug}`} data-reveal>
+            <span class="service-index">{String(i + 1).padStart(2, "0")}</span>
+            <div class="service-icon" aria-hidden="true">
+              <svg
+                width="26"
+                height="26"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                set:html={s.icon}
+              />
+            </div>
+            <h3>{s.title}</h3>
+            <p>{s.summary}</p>
+            <span class="service-more">
+              Learn more
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.4rem;
+    margin-top: 3.5rem;
+  }
+
+  .service-card {
+    display: block;
+    position: relative;
+    padding: 2rem 1.8rem;
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+    border-radius: 6px;
+    box-shadow: var(--card-shadow);
+    color: inherit;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  .service-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--blue);
+  }
+
+  .service-card:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+  }
+
+  .service-index {
+    position: absolute;
+    top: 1.6rem;
+    right: 1.8rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    opacity: 0.7;
+  }
+
+  .service-icon {
+    display: grid;
+    place-items: center;
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 6px;
+    background: var(--blue-soft);
+    color: var(--blue);
+    margin-bottom: 1.4rem;
+  }
+
+  .service-card h3 {
+    font-size: 1.18rem;
+    font-weight: 600;
+    margin-bottom: 0.7rem;
+  }
+
+  .service-card p {
+    font-size: 0.97rem;
+    color: var(--text-muted);
+  }
+
+  .service-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1.3rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--blue);
+  }
+
+  .service-more svg {
+    transition: transform 0.25s ease;
+  }
+
+  .service-card:hover .service-more svg {
+    transform: translateX(4px);
+  }
+</style>

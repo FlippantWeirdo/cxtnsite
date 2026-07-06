@@ -1,0 +1,435 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { services } from "../../data/services";
+
+export function getStaticPaths() {
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+const index = services.findIndex((s) => s.slug === service.slug);
+const others = services.filter((s) => s.slug !== service.slug);
+---
+
+<Layout
+  title={`${service.title} — Caxten Engineering`}
+  description={service.summary}
+>
+  <article class="service-page">
+    <!-- Hero -->
+    <header class="sp-hero">
+      <div class="sp-hero-bg" aria-hidden="true">
+        <img src={service.image} alt="" fetchpriority="high" />
+        <div class="sp-hero-overlay"></div>
+      </div>
+      <div class="container sp-hero-inner">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <span aria-hidden="true">/</span>
+          <a href="/#services">Services</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{service.title}</span>
+        </nav>
+
+        <div class="sp-hero-mark" aria-hidden="true">
+          <svg
+            width="30"
+            height="30"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            set:html={service.icon}
+          />
+          <span class="sp-hero-index">
+            Service {String(index + 1).padStart(2, "0")} / {String(services.length).padStart(2, "0")}
+          </span>
+        </div>
+
+        <h1 class="sp-title">{service.title}</h1>
+        <p class="sp-tagline">{service.tagline}</p>
+      </div>
+    </header>
+
+    <!-- Overview -->
+    <section class="section sp-overview">
+      <div class="container sp-overview-grid">
+        <div class="sp-overview-head" data-reveal>
+          <span class="kicker">Overview</span>
+          <h2 class="section-title">What this service covers</h2>
+        </div>
+        <div class="sp-overview-body" data-reveal>
+          {service.overview.map((p) => <p>{p}</p>)}
+          <a href="/contact" class="btn btn-primary sp-cta">
+            Discuss your requirements
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scope + deliverables -->
+    <section class="section sp-scope">
+      <div class="container">
+        <div data-reveal>
+          <span class="kicker">What's included</span>
+          <h2 class="section-title">Scope of works</h2>
+        </div>
+
+        <div class="sp-scope-layout">
+          <div class="sp-scope-grid">
+            {
+              service.scope.map((item) => (
+                <article class="sp-scope-card" data-reveal>
+                  <h3>{item.title}</h3>
+                  <p>{item.desc}</p>
+                </article>
+              ))
+            }
+          </div>
+
+          <aside class="sp-deliverables" data-reveal>
+            <h3>You receive</h3>
+            <ul>
+              {service.deliverables.map((d) => <li>{d}</li>)}
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Other services -->
+    <section class="section sp-others">
+      <div class="container">
+        <div class="sp-others-head" data-reveal>
+          <div>
+            <span class="kicker">Keep exploring</span>
+            <h2 class="section-title">Other services</h2>
+          </div>
+          <a href="/#services" class="btn btn-ghost">All services</a>
+        </div>
+        <div class="sp-others-grid">
+          {
+            others.map((s) => (
+              <a class="sp-other-card" href={`/services/${s.slug}`} data-reveal>
+                <div class="sp-other-icon" aria-hidden="true">
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    set:html={s.icon}
+                  />
+                </div>
+                <span class="sp-other-title">{s.title}</span>
+                <svg
+                  class="sp-other-arrow"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </article>
+</Layout>
+
+<style>
+  /* Hero ------------------------------------------------------------ */
+  .sp-hero {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: 62vh;
+    padding-top: 8rem;
+    padding-bottom: 3.5rem;
+    overflow: hidden;
+    color: var(--on-navy);
+  }
+
+  .sp-hero-bg,
+  .sp-hero-bg img,
+  .sp-hero-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .sp-hero-bg img {
+    object-fit: cover;
+  }
+
+  .sp-hero-overlay {
+    background: linear-gradient(
+        105deg,
+        var(--hero-overlay-a) 35%,
+        var(--hero-overlay-b) 80%
+      ),
+      linear-gradient(to top, var(--hero-overlay-a), transparent 55%);
+  }
+
+  .sp-hero-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--on-navy-muted);
+    margin-bottom: 2rem;
+  }
+
+  .breadcrumb a:hover {
+    color: #ffffff;
+  }
+
+  .breadcrumb [aria-current] {
+    color: var(--amber);
+  }
+
+  .sp-hero-mark {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--amber);
+    margin-bottom: 1.2rem;
+  }
+
+  .sp-hero-index {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--on-navy-muted);
+  }
+
+  .sp-title {
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 650;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+  }
+
+  .sp-tagline {
+    max-width: 54ch;
+    margin-top: 1.2rem;
+    font-size: 1.15rem;
+    color: var(--on-navy-muted);
+  }
+
+  /* Overview -------------------------------------------------------- */
+  .sp-overview-grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: clamp(2rem, 6vw, 5rem);
+  }
+
+  .sp-overview-body {
+    display: grid;
+    gap: 1.3rem;
+  }
+
+  .sp-overview-body p {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+  }
+
+  .sp-cta {
+    justify-self: start;
+    margin-top: 0.6rem;
+  }
+
+  /* Scope ----------------------------------------------------------- */
+  .sp-scope {
+    background: var(--surface-2);
+    transition: background-color 0.35s ease;
+  }
+
+  .sp-scope-layout {
+    display: grid;
+    grid-template-columns: 1.5fr 0.9fr;
+    gap: clamp(2rem, 5vw, 3.5rem);
+    margin-top: 3.2rem;
+    align-items: start;
+  }
+
+  .sp-scope-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.3rem;
+  }
+
+  .sp-scope-card {
+    padding: 1.7rem 1.6rem;
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+    border-radius: 6px;
+    box-shadow: var(--card-shadow);
+  }
+
+  .sp-scope-card h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .sp-scope-card p {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+  }
+
+  .sp-deliverables {
+    padding: 1.9rem 1.8rem;
+    background: linear-gradient(150deg, var(--navy), var(--navy-2));
+    border-radius: 8px;
+    color: var(--on-navy);
+    position: sticky;
+    top: 6.5rem;
+  }
+
+  .sp-deliverables h3 {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1.3rem;
+  }
+
+  .sp-deliverables ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .sp-deliverables li {
+    position: relative;
+    padding-left: 1.9rem;
+    font-size: 0.97rem;
+    color: #ffffff;
+  }
+
+  .sp-deliverables li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.4em;
+    width: 0.95rem;
+    height: 0.55rem;
+    border-left: 2.5px solid var(--amber);
+    border-bottom: 2.5px solid var(--amber);
+    transform: rotate(-45deg);
+  }
+
+  /* Other services -------------------------------------------------- */
+  .sp-others-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .sp-others-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.2rem;
+    margin-top: 3rem;
+  }
+
+  .sp-other-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.3rem 1.4rem;
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+    border-radius: 6px;
+    color: inherit;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  .sp-other-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--blue);
+  }
+
+  .sp-other-icon {
+    display: grid;
+    place-items: center;
+    width: 2.7rem;
+    height: 2.7rem;
+    flex-shrink: 0;
+    border-radius: 6px;
+    background: var(--blue-soft);
+    color: var(--blue);
+  }
+
+  .sp-other-title {
+    font-weight: 600;
+    color: var(--heading);
+  }
+
+  .sp-other-arrow {
+    margin-left: auto;
+    color: var(--blue);
+    transition: transform 0.25s ease;
+  }
+
+  .sp-other-card:hover .sp-other-arrow {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 860px) {
+    .sp-overview-grid,
+    .sp-scope-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .sp-deliverables {
+      position: static;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .sp-scope-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

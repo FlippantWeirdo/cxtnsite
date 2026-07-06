@@ -1,0 +1,99 @@
+---
+// NOTE: placeholder figures — confirm real numbers with the client before launch.
+const stats = [
+  {
+    value: 66,
+    suffix: "kV",
+    label: "Maximum voltage capability",
+    icon: `<path d="M13 2 4.5 13.5H11L9.5 22 18 10.5h-6.5L13 2Z"/>`,
+  },
+  {
+    value: 6,
+    suffix: "",
+    label: "Integrated service lines",
+    icon: `<path d="M21 8 12 3 3 8m18 0v8l-9 5m9-13-9 5M3 8v8l9 5m-9-13 9 5m0 0v8"/>`,
+  },
+  {
+    value: 24,
+    suffix: "/7",
+    label: "Maintenance & fault response",
+    icon: `<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>`,
+  },
+  {
+    value: 100,
+    suffix: "%",
+    label: "Commitment to safe delivery",
+    icon: `<path d="M12 3 5 6v5c0 4.4 3 8.4 7 9.5 4-1.1 7-5.1 7-9.5V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>`,
+  },
+];
+---
+
+<section class="stats" aria-label="Key figures">
+  <div class="container stats-grid">
+    {
+      stats.map((s) => (
+        <div class="stat" data-reveal>
+          <span class="stat-icon" aria-hidden="true">
+            <svg
+              width="26"
+              height="26"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              set:html={s.icon}
+            />
+          </span>
+          <span class="stat-value">
+            <span data-count={s.value}>0</span>
+            {s.suffix}
+          </span>
+          <span class="stat-label">{s.label}</span>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .stats {
+    background: linear-gradient(120deg, var(--navy), var(--navy-2));
+    color: var(--on-navy);
+    padding-block: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2.5rem;
+  }
+
+  .stat-icon {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 1.1rem;
+    border-radius: 8px;
+    background: rgba(232, 160, 32, 0.14);
+    color: var(--amber);
+  }
+
+  .stat-value {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.1;
+  }
+
+  .stat-label {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.92rem;
+    color: var(--on-navy-muted);
+  }
+</style>
