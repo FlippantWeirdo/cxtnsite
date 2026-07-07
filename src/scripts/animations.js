@@ -20,6 +20,38 @@ if (!reducedMotion) {
     });
   }
 
+  // --- Hero title typewriter ---------------------------------------
+  const titleEl = document.querySelector("[data-typewriter]");
+  if (titleEl) {
+    const segs = gsap.utils.toArray(".tw", titleEl);
+    const caret = titleEl.querySelector(".tw-caret");
+    const texts = segs.map((s) => s.dataset.tw ?? s.textContent);
+    segs.forEach((s) => (s.textContent = ""));
+    titleEl.classList.add("typing");
+
+    let si = 0;
+    let ci = 0;
+    const typeChar = () => {
+      if (si >= segs.length) {
+        titleEl.classList.replace("typing", "done");
+        return;
+      }
+      const seg = segs[si];
+      const full = texts[si];
+      // Keep the caret at the end of the text currently being typed.
+      if (ci === 0 && caret) seg.after(caret);
+      if (ci < full.length) {
+        seg.textContent = full.slice(0, ++ci);
+        setTimeout(typeChar, 34 + Math.random() * 28);
+      } else {
+        si++;
+        ci = 0;
+        setTimeout(typeChar, 110);
+      }
+    };
+    setTimeout(typeChar, 300);
+  }
+
   // Slow Ken Burns drift on the hero image.
   const heroImg = document.querySelector("[data-hero-img]");
   if (heroImg) {

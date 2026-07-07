@@ -32,10 +32,9 @@ const {
 
     <!-- Apply theme before first paint to avoid a flash of the wrong mode -->
     <script is:inline>
+      // Light by default; a saved toggle choice takes precedence.
       const stored = localStorage.getItem("caxten-theme");
-      const theme =
-        stored ??
-        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      const theme = stored ?? "light";
       document.documentElement.dataset.theme = theme;
       document.documentElement.classList.add("js");
       if (matchMedia("(prefers-reduced-motion: reduce)").matches) {

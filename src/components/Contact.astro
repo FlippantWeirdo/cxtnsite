@@ -126,7 +126,7 @@ const { standalone = false } = Astro.props;
     padding: 2.2rem;
     background: var(--surface);
     border: 1px solid var(--line-soft);
-    border-radius: 8px;
+    border-radius: var(--r-lg);
     box-shadow: var(--card-shadow);
   }
 
@@ -151,8 +151,8 @@ const { standalone = false } = Astro.props;
     color: var(--text);
     background: var(--bg);
     border: 1px solid var(--line);
-    border-radius: 4px;
-    padding: 0.75rem 0.9rem;
+    border-radius: var(--r-sm);
+    padding: 0.8rem 1rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 

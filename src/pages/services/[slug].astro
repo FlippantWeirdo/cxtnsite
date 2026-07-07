@@ -296,7 +296,7 @@ const others = services.filter((s) => s.slug !== service.slug);
     padding: 1.7rem 1.6rem;
     background: var(--surface);
     border: 1px solid var(--line-soft);
-    border-radius: 6px;
+    border-radius: var(--r-md);
     box-shadow: var(--card-shadow);
   }
 
@@ -314,7 +314,7 @@ const others = services.filter((s) => s.slug !== service.slug);
   .sp-deliverables {
     padding: 1.9rem 1.8rem;
     background: linear-gradient(150deg, var(--navy), var(--navy-2));
-    border-radius: 8px;
+    border-radius: var(--r-lg);
     color: var(--on-navy);
     position: sticky;
     top: 6.5rem;
@@ -380,7 +380,7 @@ const others = services.filter((s) => s.slug !== service.slug);
     padding: 1.3rem 1.4rem;
     background: var(--surface);
     border: 1px solid var(--line-soft);
-    border-radius: 6px;
+    border-radius: var(--r-md);
     color: inherit;
     transition: transform 0.3s ease, border-color 0.3s ease;
   }
@@ -393,10 +393,10 @@ const others = services.filter((s) => s.slug !== service.slug);
   .sp-other-icon {
     display: grid;
     place-items: center;
-    width: 2.7rem;
-    height: 2.7rem;
+    width: 2.9rem;
+    height: 2.9rem;
     flex-shrink: 0;
-    border-radius: 6px;
+    border-radius: 50%;
     background: var(--blue-soft);
     color: var(--blue);
   }

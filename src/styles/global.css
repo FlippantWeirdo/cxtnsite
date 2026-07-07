@@ -27,6 +27,13 @@
   --card-shadow: 0 1px 2px rgba(11, 37, 69, 0.05), 0 12px 32px -16px rgba(11, 37, 69, 0.18);
   --on-navy: #eef4fb;
   --on-navy-muted: #a8bcd6;
+
+  /* Corner radii — theme-independent. Softer + more distinctive than
+     the original flat 4px corners. */
+  --r-sm: 10px;   /* inputs, small controls */
+  --r-md: 16px;   /* cards, panels */
+  --r-lg: 22px;   /* images, large surfaces */
+  --r-chip: 999px; /* pills — buttons, badges, eyebrow chips */
 }
 
 html[data-theme="dark"] {
@@ -111,11 +118,14 @@ img {
 .kicker {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
+  padding: 0.42rem 0.95rem;
+  background: var(--blue-soft);
+  border-radius: var(--r-chip);
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 500;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--blue);
 }
@@ -139,8 +149,8 @@ img {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  padding: 0.85rem 1.7rem;
-  border-radius: 4px;
+  padding: 0.85rem 1.8rem;
+  border-radius: var(--r-chip);
   border: 1px solid transparent;
   font-family: var(--font-sans);
   font-size: 0.95rem;
@@ -153,6 +163,15 @@ img {
 
 .btn svg {
   transition: transform 0.25s ease;
+}
+
+/* On phones, CTAs span the full width for easier tapping.
+   The compact header button keeps its intrinsic size. */
+@media (max-width: 560px) {
+  .btn:not(.header-cta) {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 .btn:hover svg {
