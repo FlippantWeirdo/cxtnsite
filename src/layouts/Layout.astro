@@ -1,17 +1,51 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import { company, contact } from "../data/site";
 import "../styles/global.css";
 
 interface Props {
   title?: string;
   description?: string;
+  /** Social-share image, absolute or site-relative. Defaults to the brand card. */
+  image?: string;
 }
 
 const {
   title = "Caxten Engineering — HV & MV Electrical Systems",
   description = "Equipment supply, installation, testing, commissioning and maintenance of low & medium voltage 0.4kV, 11kV, 33kV & 66kV electrical facilities.",
+  image = "/og/og-default.png",
 } = Astro.props;
+
+// Absolute URLs — required by search engines and social scrapers.
+// Astro.site comes from `site` in astro.config.mjs.
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
+
+// Organization / local-business structured data (JSON-LD). Sourced from the
+// single content file so it stays in sync with the rest of the site.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ElectricalContractor",
+  name: company.legalName,
+  alternateName: company.name,
+  description: company.blurb,
+  url: Astro.site?.toString(),
+  image: ogImage.toString(),
+  logo: new URL("/images/logo.png", Astro.site).toString(),
+  telephone: contact.phoneHref,
+  email: contact.email,
+  foundingDate: "2008",
+  identifier: { "@type": "PropertyValue", name: "RC", value: company.rc },
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: contact.addressLines.join(" ").replace(/,$/, ""),
+    addressLocality: "Ibeju-Lekki",
+    addressRegion: "Lagos",
+    addressCountry: "NG",
+  },
+  areaServed: { "@type": "Country", name: "Nigeria" },
+};
 ---
 
 <!doctype html>
@@ -20,6 +54,28 @@ const {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph (large-image card) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Caxten Engineering" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Caxten Engineering — HV & MV electrical systems" />
+    <meta property="og:locale" content="en_NG" />
+
+    <!-- Twitter / X large-image card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
