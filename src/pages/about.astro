@@ -1,0 +1,457 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+import {
+  credibility,
+  vision,
+  mission,
+  process,
+  management,
+  initials,
+} from "../data/site";
+---
+
+<Layout
+  title="About — Caxten Engineering"
+  description="Caxten Engineering Limited (RC 1602365) is an indigenous electrical engineering company specialising in 33kV, 11kV and 0.4kV power systems."
+>
+  <PageHero
+    eyebrow="Who we are"
+    title="Disciplined engineering. Dependable power."
+    lede="Caxten Engineering Limited is an indigenous electrical engineering company, registered with the Corporate Affairs Commission (RC 1602365), specialising in the supply, installation, testing and commissioning of 33kV, 11kV and 0.4kV power systems for industrial, commercial and domestic clients."
+    crumb="About"
+  />
+
+  <!-- Narrative + collage -->
+  <section class="section">
+    <div class="container about-narrative">
+      <div class="about-media" data-reveal>
+        <img
+          class="about-img-main"
+          src="/images/about-team.jpg"
+          alt="Caxten engineers on site during a medium-voltage substation installation"
+          loading="lazy"
+          width="1305"
+          height="734"
+        />
+        <img
+          class="about-img-inset"
+          src="/images/service-install.jpg"
+          alt="Caxten technician carrying out on-site electrical installation work"
+          loading="lazy"
+          width="1008"
+          height="756"
+        />
+      </div>
+      <div data-reveal>
+        <span class="kicker">Our approach</span>
+        <h2 class="section-title">Quality engineering, delivered safely</h2>
+        <p class="about-p">
+          Our engineers are COREN-registered and trained across protection,
+          control and switchgear maintenance. We deliver substation and network
+          projects to utility specification — on programme, and with the
+          documentation to prove it.
+        </p>
+        <p class="about-p">
+          Our quality policy is built on competitive, high-quality engineering,
+          professional client support, rigorous project supervision and an
+          uncompromising safety culture.
+        </p>
+        <ul class="about-points">
+          {
+            credibility.map((c) => (
+              <li>
+                <span class="check" aria-hidden="true">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.4"><path d="M20 6 9 17l-5-5" /></svg>
+                </span>
+                {c}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vision + mission -->
+  <section class="section vm-section">
+    <div class="container vm-grid">
+      <div class="vm-card" data-reveal>
+        <span class="kicker">Our vision</span>
+        <p>{vision}</p>
+      </div>
+      <div class="vm-card" data-reveal>
+        <span class="kicker">Our mission</span>
+        <p>{mission}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Delivery process -->
+  <section class="section">
+    <div class="container">
+      <div class="process-head" data-reveal>
+        <span class="kicker">Delivery process</span>
+        <h2 class="section-title">
+          One accountable chain, assessment to maintenance
+        </h2>
+      </div>
+      <div class="process" data-reveal>
+        <div class="process-track" aria-hidden="true">
+          <span class="process-line" data-process-line></span>
+        </div>
+        <ol class="process-steps">
+          {
+            process.map((p) => (
+              <li class="process-step">
+                <span class="step-num">{p.n}</span>
+                <span class="step-label">{p.name}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Management team -->
+  <section class="section team-section">
+    <div class="container">
+      <div class="team-head" data-reveal>
+        <span class="kicker">Management team</span>
+        <h2 class="section-title">Qualified, certified, accountable</h2>
+      </div>
+      <div class="team-grid">
+        {
+          management.map((m) => (
+            <div class="team-card" data-reveal>
+              <span class="team-avatar" aria-hidden="true">
+                {initials(m.name)}
+              </span>
+              <h3>{m.name}</h3>
+              <span class="team-role">{m.role}</span>
+              <span class="team-quals">{m.quals}</span>
+              <ul class="team-certs">
+                {m.certs.map((cert) => (
+                  <li>
+                    <span class="check sm" aria-hidden="true">
+                      <svg
+                        width="11"
+                        height="11"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.6"><path d="M20 6 9 17l-5-5" /></svg>
+                    </span>
+                    {cert}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Narrative ------------------------------------------------------- */
+  .about-narrative {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+
+  .about-media {
+    position: relative;
+  }
+
+  .about-img-main {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1305 / 734;
+    object-fit: cover;
+    border-radius: var(--r-lg);
+    border: 1px solid var(--line);
+    box-shadow: var(--card-shadow);
+  }
+
+  /* Landscape detail shot tucked into the bottom-right corner, overlapping
+     the main image and poking out below and to the right. */
+  .about-img-inset {
+    position: absolute;
+    right: -6%;
+    bottom: -16%;
+    width: 46%;
+    height: auto;
+    aspect-ratio: 1008 / 756;
+    object-fit: cover;
+    border-radius: var(--r-lg);
+    border: 7px solid var(--bg);
+    box-shadow: var(--card-shadow);
+  }
+
+  .about-p {
+    margin: 1.1rem 0 0;
+    color: var(--text-muted);
+    max-width: 58ch;
+  }
+
+  .about-points {
+    margin: 1.6rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .about-points li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .check {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    background: var(--blue-soft);
+    color: var(--blue);
+  }
+
+  .check.sm {
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+  }
+
+  /* Vision + mission ------------------------------------------------ */
+  .vm-section {
+    background: var(--surface-2);
+    transition: background-color 0.35s ease;
+  }
+
+  .vm-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.4rem;
+  }
+
+  .vm-card {
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--r-md);
+    padding: clamp(1.8rem, 3vw, 2.4rem);
+    box-shadow: var(--card-shadow);
+  }
+
+  .vm-card p {
+    margin: 1.2rem 0 0;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--heading);
+    text-wrap: pretty;
+  }
+
+  /* Delivery process ------------------------------------------------ */
+  .process-head {
+    max-width: 640px;
+    margin-bottom: 2.6rem;
+  }
+
+  .process {
+    position: relative;
+  }
+
+  .process-track {
+    position: absolute;
+    top: 22px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--line);
+  }
+
+  .process-line {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: var(--blue);
+    transform-origin: left center;
+  }
+
+  .js .process-line {
+    transform: scaleX(0);
+  }
+
+  .js.reduced-motion .process-line {
+    transform: none;
+  }
+
+  .process-steps {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .process-step {
+    text-align: center;
+  }
+
+  .step-num {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    margin: 0 auto;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--blue);
+  }
+
+  .step-label {
+    display: block;
+    margin-top: 0.8rem;
+    font-weight: 600;
+    font-size: 0.98rem;
+    color: var(--heading);
+  }
+
+  /* Management ------------------------------------------------------ */
+  .team-section {
+    background: var(--surface-2);
+    transition: background-color 0.35s ease;
+  }
+
+  .team-head {
+    max-width: 640px;
+    margin-bottom: 2.6rem;
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.4rem;
+  }
+
+  .team-card {
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--r-md);
+    padding: 1.6rem;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  .team-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--blue);
+  }
+
+  .team-avatar {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+    background: var(--blue-soft);
+    color: var(--blue);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .team-card h3 {
+    margin: 1rem 0 0.25rem;
+    font-size: 1.15rem;
+  }
+
+  .team-role {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  .team-quals {
+    display: block;
+    margin-top: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  .team-certs {
+    margin: 1.1rem 0 0;
+    padding: 1.1rem 0 0;
+    border-top: 1px solid var(--line-soft);
+    list-style: none;
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .team-certs li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.86rem;
+    color: var(--text);
+  }
+
+  @media (max-width: 900px) {
+    .about-narrative,
+    .vm-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .about-media {
+      margin-bottom: 4.5rem;
+    }
+
+    /* keep the inset inside the viewport on narrow screens */
+    .about-img-inset {
+      right: 0;
+      bottom: -12%;
+      width: 42%;
+    }
+
+    .process-steps {
+      grid-template-columns: repeat(3, 1fr);
+      row-gap: 2rem;
+    }
+
+    .process-track {
+      display: none;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .process-steps {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

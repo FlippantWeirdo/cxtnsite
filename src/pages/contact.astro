@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
 import Contact from "../components/Contact.astro";
 ---
 
@@ -7,5 +8,11 @@ import Contact from "../components/Contact.astro";
   title="Contact — Caxten Engineering"
   description="Speak to Caxten's engineers about your next HV or MV electrical project — new substations, network upgrades or maintenance of existing assets."
 >
-  <Contact standalone />
+  <PageHero
+    eyebrow="Contact"
+    title="Speak to an engineer"
+    lede="Tell us about your substation, connection or maintenance requirement. We respond to project enquiries within one working day."
+    crumb="Contact"
+  />
+  <Contact />
 </Layout>

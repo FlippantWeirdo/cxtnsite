@@ -1,60 +1,36 @@
 ---
-const sectors = [
-  {
-    name: "Utilities & Power Distribution",
-    desc: "Network reinforcement, substation upgrades and utility interface works for distribution companies.",
-  },
-  {
-    name: "Industrial & Manufacturing",
-    desc: "Reliable MV/LV power for plants where downtime is measured in lost production.",
-  },
-  {
-    name: "Oil, Gas & Energy",
-    desc: "Electrical infrastructure for processing facilities, terminals and pipeline assets.",
-  },
-  {
-    name: "Commercial & Real Estate",
-    desc: "Dedicated 11/33kV supplies, standby schemes and building distribution for major developments.",
-  },
-  {
-    name: "Renewables & IPPs",
-    desc: "Grid connection, collector substations and export infrastructure for independent generators.",
-  },
-  {
-    name: "Data Centres & Critical Facilities",
-    desc: "Resilient power architectures where availability is non-negotiable.",
-  },
-];
-
-const renewablesImage =
-  "https://images.unsplash.com/photo-1467533003447-e295ff1b0435?auto=format&fit=crop&w=1400&q=70";
+import { sectors } from "../data/site";
 ---
 
 <section class="section sectors" id="sectors">
   <div class="container">
     <div class="sectors-header" data-reveal>
       <div>
-        <span class="kicker">Where we work</span>
-        <h2 class="section-title">Sectors we serve</h2>
+        <span class="kicker">Sectors served</span>
+        <h2 class="section-title">Trusted where power cannot fail</h2>
       </div>
       <p class="section-lede">
-        Wherever electrical infrastructure is critical to the business behind
-        it, Caxten has the competence to deliver.
+        We work across the industries that depend on resilient high-voltage
+        infrastructure — from grid operators to mission-critical facilities.
       </p>
     </div>
 
     <div class="sectors-grid">
-      <figure class="sectors-figure" data-reveal>
+      <div class="sectors-figure" data-reveal aria-hidden="true">
         <img
-          src={renewablesImage}
-          alt="Wind turbines on a ridge at dusk"
+          src="/images/sector-grid.jpg"
+          alt=""
           loading="lazy"
+          width="1306"
+          height="743"
         />
-      </figure>
+        <span class="figure-tag">Grid substation — photograph</span>
+      </div>
       {
         sectors.map((s) => (
           <article class="sector-card" data-reveal>
-            <h3>{s.name}</h3>
+            <span class="sector-icon" aria-hidden="true" set:html={s.icon} />
+            <h3>{s.title}</h3>
             <p>{s.desc}</p>
           </article>
         ))
@@ -72,7 +48,7 @@ const renewablesImage =
   .sectors-header {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
     align-items: end;
   }
 
@@ -83,30 +59,46 @@ const renewablesImage =
 
   .sectors-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.4rem;
-    margin-top: 3.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.1rem;
+    margin-top: 2.6rem;
   }
 
   .sectors-figure {
-    grid-row: span 2;
-    margin: 0;
-    border-radius: var(--r-lg);
+    position: relative;
+    min-height: 200px;
+    border-radius: var(--r-md);
     overflow: hidden;
+    border: 1px solid var(--line);
     box-shadow: var(--card-shadow);
   }
 
   .sectors-figure img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
+  .figure-tag {
+    position: absolute;
+    left: 1.3rem;
+    bottom: 1.3rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #eef4fb;
+    text-shadow: 0 1px 6px rgba(6, 13, 24, 0.7);
+  }
+
   .sector-card {
-    padding: 1.8rem 1.7rem;
+    padding: 1.4rem;
     background: var(--surface);
     border: 1px solid var(--line-soft);
     border-radius: var(--r-md);
+    box-shadow: var(--card-shadow);
     transition: transform 0.3s ease, border-color 0.3s ease;
   }
 
@@ -115,14 +107,24 @@ const renewablesImage =
     border-color: var(--blue);
   }
 
+  .sector-icon {
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 10px;
+    background: var(--blue-soft);
+    color: var(--blue);
+  }
+
   .sector-card h3 {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    margin-bottom: 0.55rem;
+    margin: 0.9rem 0 0.4rem;
   }
 
   .sector-card p {
-    font-size: 0.92rem;
+    font-size: 0.93rem;
     color: var(--text-muted);
   }
 
@@ -134,26 +136,6 @@ const renewablesImage =
 
     .sectors-header .section-lede {
       justify-self: start;
-    }
-
-    .sectors-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .sectors-figure {
-      grid-column: span 2;
-      grid-row: auto;
-      max-height: 260px;
-    }
-  }
-
-  @media (max-width: 560px) {
-    .sectors-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .sectors-figure {
-      grid-column: span 1;
     }
   }
 </style>

@@ -1,26 +1,16 @@
 ---
 import Logo from "./Logo.astro";
 import { services } from "../data/services";
+import { company, contact } from "../data/site";
 
 const year = new Date().getFullYear();
-
-const siteLinks = [
-  { href: "/#services", label: "Services" },
-  { href: "/#capabilities", label: "Capabilities" },
-  { href: "/#about", label: "About" },
-  { href: "/#sectors", label: "Sectors" },
-  { href: "/contact", label: "Contact" },
-];
 ---
 
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-brand">
       <Logo />
-      <p>
-        Specialist contractor for high &amp; medium voltage electrical
-        facilities — 0.4kV, 11kV, 33kV &amp; 66kV.
-      </p>
+      <p>{company.blurb}</p>
     </div>
 
     <nav class="footer-col" aria-label="Services">
@@ -36,35 +26,39 @@ const siteLinks = [
       </ul>
     </nav>
 
-    <nav class="footer-col" aria-label="Site">
+    <nav class="footer-col" aria-label="Company">
       <h3>Company</h3>
       <ul>
-        {siteLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+        <li><a href="/projects">Projects</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/#sectors">Sectors</a></li>
+        <li><a href="/contact">Contact</a></li>
       </ul>
     </nav>
 
     <div class="footer-col">
       <h3>Contact</h3>
       <ul>
-        <li><a href="mailto:info@caxten.com">info@caxten.com</a></li>
-        <li><a href="tel:+2340000000000">+234 (0) 000 000 0000</a></li>
-        <li>Head office address, City, Country</li>
+        <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>
+        <li><a href={`tel:${contact.phoneHref}`}>{contact.phone}</a></li>
+        <li>
+          {contact.addressLines[0]}<br />{contact.addressLines[1]}
+        </li>
       </ul>
     </div>
   </div>
 
   <div class="container footer-bottom">
-    <p>© {year} Caxten Engineering. All rights reserved.</p>
-    <p class="footer-tag">Powering critical infrastructure, safely.</p>
+    <p>© {year} {company.legalName} · RC {company.rc}</p>
+    <p class="footer-tag">{company.tagline}</p>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    border-top: 1px solid var(--line-soft);
-    background: var(--surface);
-    transition: background-color 0.35s ease;
-    padding-top: clamp(3rem, 6vw, 4.5rem);
+    background: var(--navy);
+    color: #c2d1e4;
+    padding-top: clamp(3.5rem, 6vw, 5rem);
   }
 
   .footer-grid {
@@ -75,20 +69,20 @@ const siteLinks = [
   }
 
   .footer-brand p {
-    margin-top: 1.2rem;
+    margin-top: 1rem;
     max-width: 34ch;
-    font-size: 0.92rem;
-    color: var(--text-muted);
+    font-size: 0.95rem;
+    color: #8ba1bc;
   }
 
   .footer-col h3 {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.66rem;
     font-weight: 500;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--blue);
-    margin-bottom: 1.1rem;
+    color: #5b9bff;
+    margin-bottom: 1rem;
   }
 
   .footer-col ul {
@@ -96,9 +90,9 @@ const siteLinks = [
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 0.65rem;
-    font-size: 0.92rem;
-    color: var(--text-muted);
+    gap: 0.6rem;
+    font-size: 0.94rem;
+    color: #c2d1e4;
   }
 
   .footer-col a {
@@ -106,7 +100,7 @@ const siteLinks = [
   }
 
   .footer-col a:hover {
-    color: var(--blue);
+    color: #eef4fb;
   }
 
   .footer-bottom {
@@ -115,15 +109,23 @@ const siteLinks = [
     gap: 1rem;
     flex-wrap: wrap;
     padding-block: 1.4rem;
-    border-top: 1px solid var(--line-soft);
+    border-top: 1px solid rgba(200, 220, 245, 0.14);
     font-size: 0.85rem;
-    color: var(--text-muted);
+    color: #8ba1bc;
   }
 
   .footer-tag {
     font-family: var(--font-mono);
-    font-size: 0.78rem;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.04em;
+  }
+
+  /* The logo wordmark sits on a dark surface here. */
+  .footer-brand :global(.logo-text) {
+    color: #eef4fb;
+  }
+
+  .footer-brand :global(.logo-text small) {
+    color: #8ba1bc;
   }
 
   @media (max-width: 900px) {

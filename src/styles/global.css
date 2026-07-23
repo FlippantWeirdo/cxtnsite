@@ -233,6 +233,6 @@ html[data-theme="dark"] .btn-primary:hover {
 }
 
 ::selection {
-  background: var(--blue);
-  color: #ffffff;
+  background: var(--amber);
+  color: #0b2545;
 }

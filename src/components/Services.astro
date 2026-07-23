@@ -6,31 +6,18 @@ import { services } from "../data/services";
   <div class="container">
     <div data-reveal>
       <span class="kicker">What we do</span>
-      <h2 class="section-title">A complete lifecycle service for electrical facilities</h2>
+      <h2 class="section-title">Six disciplines, one accountable delivery partner</h2>
       <p class="section-lede">
-        From procurement to energization and beyond — one accountable partner
-        across the full life of your electrical infrastructure.
+        From procurement to lifetime maintenance, every stage of a
+        high-voltage project handled under a single chain of responsibility.
       </p>
     </div>
 
     <div class="services-grid">
       {
-        services.map((s, i) => (
+        services.map((s) => (
           <a class="service-card" href={`/services/${s.slug}`} data-reveal>
-            <span class="service-index">{String(i + 1).padStart(2, "0")}</span>
-            <div class="service-icon" aria-hidden="true">
-              <svg
-                width="26"
-                height="26"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                set:html={s.icon}
-              />
-            </div>
+            <span class="service-icon" aria-hidden="true" set:html={s.icon} />
             <h3>{s.title}</h3>
             <p>{s.summary}</p>
             <span class="service-more">
@@ -56,15 +43,15 @@ import { services } from "../data/services";
 <style>
   .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.4rem;
-    margin-top: 3.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.1rem;
+    margin-top: 2.6rem;
   }
 
   .service-card {
     display: block;
     position: relative;
-    padding: 2rem 1.8rem;
+    padding: 1.6rem 1.5rem 1.4rem;
     background: var(--surface);
     border: 1px solid var(--line-soft);
     border-radius: var(--r-md);
@@ -74,7 +61,7 @@ import { services } from "../data/services";
   }
 
   .service-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
     border-color: var(--blue);
   }
 
@@ -83,35 +70,24 @@ import { services } from "../data/services";
     outline-offset: 3px;
   }
 
-  .service-index {
-    position: absolute;
-    top: 1.6rem;
-    right: 1.8rem;
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    opacity: 0.7;
-  }
-
   .service-icon {
     display: grid;
     place-items: center;
-    width: 3.4rem;
-    height: 3.4rem;
-    border-radius: 50%;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 12px;
     background: var(--blue-soft);
     color: var(--blue);
-    margin-bottom: 1.4rem;
   }
 
   .service-card h3 {
-    font-size: 1.18rem;
+    font-size: 1.22rem;
     font-weight: 600;
-    margin-bottom: 0.7rem;
+    margin: 1.1rem 0 0.5rem;
   }
 
   .service-card p {
-    font-size: 0.97rem;
+    font-size: 0.98rem;
     color: var(--text-muted);
   }
 
@@ -119,8 +95,8 @@ import { services } from "../data/services";
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    margin-top: 1.3rem;
-    font-size: 0.88rem;
+    margin-top: 1rem;
+    font-size: 0.92rem;
     font-weight: 600;
     color: var(--blue);
   }

@@ -1,0 +1,121 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  lede: string;
+  /** Current-page label shown in the breadcrumb. */
+  crumb: string;
+}
+
+const { eyebrow, title, lede, crumb } = Astro.props;
+---
+
+<section class="page-hero">
+  <div class="page-hero-bg" aria-hidden="true">
+    <div class="page-hero-stripes"></div>
+    <div class="page-hero-shade"></div>
+    <div class="page-hero-grid"></div>
+  </div>
+  <div class="container page-hero-inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{crumb}</span>
+    </nav>
+    <span class="page-hero-eyebrow">{eyebrow}</span>
+    <h1 class="page-hero-title">{title}</h1>
+    <p class="page-hero-lede">{lede}</p>
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    position: relative;
+    overflow: hidden;
+    padding-top: calc(4.5rem + clamp(3rem, 6vw, 5rem));
+    padding-bottom: clamp(3rem, 5vw, 4.5rem);
+  }
+
+  .page-hero-bg,
+  .page-hero-stripes,
+  .page-hero-shade,
+  .page-hero-grid {
+    position: absolute;
+    inset: 0;
+  }
+
+  .page-hero-stripes {
+    background: #081326
+      repeating-linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.045) 0 14px,
+        transparent 14px 28px
+      );
+  }
+
+  .page-hero-shade {
+    background: linear-gradient(180deg, rgba(6, 13, 24, 0.55), rgba(6, 13, 24, 0.88)),
+      linear-gradient(90deg, rgba(11, 37, 69, 0.9), rgba(11, 37, 69, 0.4));
+  }
+
+  .page-hero-grid {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .page-hero-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #8ba1bc;
+    margin-bottom: 2rem;
+  }
+
+  .breadcrumb a {
+    color: #a9bcd6;
+  }
+
+  .breadcrumb a:hover {
+    color: #ffffff;
+  }
+
+  .breadcrumb [aria-current] {
+    color: #eef4fb;
+  }
+
+  .page-hero-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+
+  .page-hero-title {
+    margin: 1.1rem 0 0;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 650;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: #eef4fb;
+    max-width: 18ch;
+  }
+
+  .page-hero-lede {
+    margin: 1.1rem 0 0;
+    max-width: 58ch;
+    font-size: 1.15rem;
+    color: #a9bcd6;
+  }
+</style>

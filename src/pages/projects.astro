@@ -1,0 +1,86 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { projects } from "../data/site";
+---
+
+<Layout
+  title="Projects — Caxten Engineering"
+  description="Medium- and high-voltage substations, feeders and distribution projects supplied, installed and commissioned by Caxten for clients across Lagos."
+>
+  <PageHero
+    eyebrow="Track record"
+    title="Projects delivered, commissioned and handed over"
+    lede="From retail and commercial developments to mission-critical data centres, Caxten has supplied, installed and commissioned medium-voltage substations for clients across Lagos who cannot afford to lose power."
+    crumb="Projects"
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="projects-grid">
+        {projects.map((p) => <ProjectCard project={p} variant="full" />)}
+      </div>
+
+      <div class="projects-cta" data-reveal>
+        <div>
+          <h2>Have a substation or connection project?</h2>
+          <p>
+            Tell us the voltage class, site and scope — we respond to enquiries
+            within one working day.
+          </p>
+        </div>
+        <a href="/contact" class="btn btn-primary">
+          Speak to an engineer
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.4rem;
+  }
+
+  .projects-cta {
+    margin-top: clamp(3rem, 5vw, 4rem);
+    background: var(--navy);
+    border-radius: var(--r-md);
+    padding: clamp(2rem, 4vw, 3rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    box-shadow: var(--card-shadow);
+  }
+
+  .projects-cta h2 {
+    margin: 0 0 0.5rem;
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+    color: #eef4fb;
+  }
+
+  .projects-cta p {
+    margin: 0;
+    max-width: 46ch;
+    color: #a9bcd6;
+  }
+
+  .projects-cta .btn {
+    white-space: nowrap;
+  }
+</style>

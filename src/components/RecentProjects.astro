@@ -1,0 +1,73 @@
+---
+import { projects } from "../data/site";
+import ProjectCard from "./ProjectCard.astro";
+
+const featured = projects.slice(0, 3);
+---
+
+<section class="section recent" id="projects">
+  <div class="container">
+    <div class="recent-header" data-reveal>
+      <div>
+        <span class="kicker">Recent projects</span>
+        <h2 class="section-title">Delivered, energised, handed over</h2>
+      </div>
+      <p class="section-lede">
+        A selection of recent high- and medium-voltage projects — from grid
+        connections to mission-critical distribution — each delivered as a
+        coordinated package.
+      </p>
+    </div>
+
+    <div class="recent-grid">
+      {featured.map((p) => <ProjectCard project={p} variant="home" />)}
+    </div>
+
+    <div class="recent-cta" data-reveal>
+      <a href="/projects" class="btn btn-primary">
+        View all projects
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .recent-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: end;
+    margin-bottom: 2.6rem;
+  }
+
+  .recent-header .section-lede {
+    margin-top: 0;
+  }
+
+  .recent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.4rem;
+  }
+
+  .recent-cta {
+    margin-top: 2.2rem;
+  }
+
+  @media (max-width: 900px) {
+    .recent-header {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+  }
+</style>

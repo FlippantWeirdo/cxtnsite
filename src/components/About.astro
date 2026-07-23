@@ -1,17 +1,5 @@
 ---
-const teamImage =
-  "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1400&q=70";
-const workImage =
-  "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=900&q=70";
-
-const steps = [
-  { label: "Assess", desc: "Site survey & requirements" },
-  { label: "Design", desc: "Engineering & specification" },
-  { label: "Supply", desc: "Procurement & logistics" },
-  { label: "Install", desc: "Construction & erection" },
-  { label: "Commission", desc: "Testing & energization" },
-  { label: "Maintain", desc: "Support across asset life" },
-];
+import { credibility } from "../data/site";
 ---
 
 <section class="section about" id="about">
@@ -19,15 +7,19 @@ const steps = [
     <div class="about-media" data-reveal>
       <img
         class="about-img-main"
-        src={teamImage}
-        alt="Engineering team reviewing works on a construction site"
+        src="/images/about-team.jpg"
+        alt="Caxten engineers on site during a medium-voltage substation installation"
         loading="lazy"
+        width="1305"
+        height="734"
       />
       <img
         class="about-img-inset"
-        src={workImage}
-        alt="Electrical technician testing equipment on a panel"
+        src="/images/service-install.jpg"
+        alt="Caxten technician carrying out on-site electrical installation work"
         loading="lazy"
+        width="1008"
+        height="756"
       />
     </div>
 
@@ -35,73 +27,92 @@ const steps = [
       <span class="kicker">Who we are</span>
       <h2 class="section-title">Disciplined engineering. Dependable power.</h2>
       <p class="section-lede">
-        Caxten Engineering is a specialist electrical contractor focused on
-        high and medium voltage systems. We take single-point responsibility
-        for the facilities our clients depend on — delivering to standard,
-        on programme, and above all, safely.
+        Established in 2008, Caxten is an indigenous electrical engineering
+        contractor specialising in 33kV, 11kV and 0.4kV power systems. Led by
+        COREN-registered engineers with over 20 years of experience, we supply,
+        install, test and commission substation and distribution projects to
+        utility specification — safely, on programme, and fully documented.
       </p>
       <ul class="about-points">
-        <li>Safety-first culture with permit-to-work discipline on every site</li>
-        <li>Qualified HV-authorised engineers and test technicians</li>
-        <li>Full documentation: test records, as-builts and O&amp;M manuals</li>
-        <li>Works delivered to IEC standards and utility grid codes</li>
+        {
+          credibility.map((c) => (
+            <li>
+              <span class="check" aria-hidden="true">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.4"><path d="M20 6 9 17l-5-5" /></svg>
+              </span>
+              {c}
+            </li>
+          ))
+        }
       </ul>
+      <a href="/about" class="btn btn-primary about-cta">
+        About Caxten
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
+      </a>
     </div>
-  </div>
-
-  <div class="container process" aria-label="Delivery process">
-    <div class="process-track" aria-hidden="true">
-      <span class="process-line" data-process-line></span>
-    </div>
-    <ol class="process-steps">
-      {
-        steps.map((s, i) => (
-          <li class="process-step" data-reveal>
-            <span class="step-num">{String(i + 1).padStart(2, "0")}</span>
-            <span class="step-label">{s.label}</span>
-            <span class="step-desc">{s.desc}</span>
-          </li>
-        ))
-      }
-    </ol>
   </div>
 </section>
 
 <style>
+  .about {
+    background: var(--surface-2);
+    transition: background-color 0.35s ease;
+  }
+
   .about-layout {
     display: grid;
-    grid-template-columns: 0.95fr 1.05fr;
-    gap: clamp(2.5rem, 6vw, 5.5rem);
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 4vw, 3.5rem);
     align-items: center;
   }
 
   .about-media {
     position: relative;
-    padding-bottom: 3.5rem;
   }
 
   .about-img-main {
+    display: block;
     width: 100%;
-    aspect-ratio: 4 / 3.4;
+    height: auto;
+    aspect-ratio: 1305 / 734;
     object-fit: cover;
     border-radius: var(--r-lg);
+    border: 1px solid var(--line);
     box-shadow: var(--card-shadow);
   }
 
+  /* Landscape detail shot tucked into the bottom-right corner, overlapping
+     the main image and poking out below and to the right. */
   .about-img-inset {
     position: absolute;
-    right: -1rem;
-    bottom: 0;
+    right: -6%;
+    bottom: -16%;
     width: 46%;
-    aspect-ratio: 1;
+    height: auto;
+    aspect-ratio: 1008 / 756;
     object-fit: cover;
     border-radius: var(--r-lg);
-    border: 5px solid var(--bg);
+    border: 7px solid var(--surface-2);
     box-shadow: var(--card-shadow);
   }
 
   .about-points {
-    margin: 2rem 0 0;
+    margin: 1.8rem 0 0;
     padding: 0;
     list-style: none;
     display: grid;
@@ -109,80 +120,27 @@ const steps = [
   }
 
   .about-points li {
-    position: relative;
-    padding-left: 1.9rem;
-    font-size: 0.98rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text);
   }
 
-  .about-points li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.42em;
-    width: 0.95rem;
-    height: 0.55rem;
-    border-left: 2.5px solid var(--blue);
-    border-bottom: 2.5px solid var(--blue);
-    transform: rotate(-45deg);
-  }
-
-  /* Delivery process ------------------------------------------------ */
-
-  .process {
-    margin-top: clamp(4rem, 8vw, 6.5rem);
-  }
-
-  .process-track {
-    height: 2px;
-    background: var(--line-soft);
-    border-radius: 1px;
-    overflow: hidden;
-  }
-
-  .process-line {
-    display: block;
-    height: 100%;
-    width: 100%;
-    background: linear-gradient(90deg, var(--blue), var(--amber));
-    transform-origin: left center;
-  }
-
-  .js .process-line {
-    transform: scaleX(0);
-  }
-
-  .js.reduced-motion .process-line {
-    transform: none;
-  }
-
-  .process-steps {
+  .check {
+    flex: none;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 1.2rem;
-    margin: 1.6rem 0 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .process-step {
-    display: grid;
-    gap: 0.2rem;
-  }
-
-  .step-num {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    background: var(--blue-soft);
     color: var(--blue);
   }
 
-  .step-label {
-    font-weight: 600;
-    color: var(--heading);
-  }
-
-  .step-desc {
-    font-size: 0.83rem;
-    color: var(--text-muted);
+  .about-cta {
+    margin-top: 2rem;
   }
 
   @media (max-width: 900px) {
@@ -190,15 +148,15 @@ const steps = [
       grid-template-columns: 1fr;
     }
 
-    .process-steps {
-      grid-template-columns: repeat(3, 1fr);
-      row-gap: 2rem;
+    .about-media {
+      margin-bottom: 4.5rem;
     }
-  }
 
-  @media (max-width: 560px) {
-    .process-steps {
-      grid-template-columns: repeat(2, 1fr);
+    /* keep the inset inside the viewport on narrow screens */
+    .about-img-inset {
+      right: 0;
+      bottom: -12%;
+      width: 42%;
     }
   }
 </style>

@@ -1,7 +1,5 @@
 ---
-// NOTE: placeholder contact details — replace with the client's real
-// address, phone and email. The form is presentational for now; wire it
-// to a form service (Formspree, Basin, etc.) or an API route later.
+import { contact, company } from "../data/site";
 
 interface Props {
   /** When true, adds top padding so the section clears the fixed header
@@ -16,28 +14,30 @@ const { standalone = false } = Astro.props;
   <div class="container contact-layout">
     <div class="contact-info" data-reveal>
       <span class="kicker">Get in touch</span>
-      <h2 class="section-title">Let's discuss your next project</h2>
+      <h2 class="section-title">Reach the Caxten engineering team</h2>
       <p class="section-lede">
-        Whether you're planning a new substation, upgrading a network or need
-        a maintenance partner for existing assets — speak to our engineers.
+        Registered with the Corporate Affairs Commission (RC {company.rc}) and
+        based in Ibeju-Lekki, Lagos. Tell us about your substation, connection
+        or maintenance requirement — we respond to project enquiries within one
+        working day.
       </p>
 
       <dl class="contact-details">
         <div>
           <dt>Email</dt>
-          <dd><a href="mailto:info@caxten.com">info@caxten.com</a></dd>
+          <dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd>
         </div>
         <div>
           <dt>Phone</dt>
-          <dd><a href="tel:+2340000000000">+234 (0) 000 000 0000</a></dd>
+          <dd><a href={`tel:${contact.phoneHref}`}>{contact.phone}</a></dd>
         </div>
         <div>
           <dt>Office</dt>
-          <dd>Head office address, City, Country</dd>
+          <dd>{contact.addressLines[0]}<br />{contact.addressLines[1]}</dd>
         </div>
         <div>
           <dt>Emergency callout</dt>
-          <dd>24/7 fault response for maintenance clients</dd>
+          <dd>{contact.emergency}</dd>
         </div>
       </dl>
     </div>
@@ -45,11 +45,11 @@ const { standalone = false } = Astro.props;
     <form class="contact-form" data-reveal>
       <div class="form-row">
         <label>
-          Full name
+          Name
           <input type="text" name="name" placeholder="Your name" required />
         </label>
         <label>
-          Email address
+          Email
           <input type="email" name="email" placeholder="you@company.com" required />
         </label>
       </div>
@@ -62,10 +62,22 @@ const { standalone = false } = Astro.props;
         <textarea
           name="message"
           rows="5"
-          placeholder="Tell us about the works — voltage level, scope, location, timeline…"
+          placeholder="Voltage class, site location, scope required…"
           required></textarea>
       </label>
-      <button type="submit" class="btn btn-primary">Send enquiry</button>
+      <button type="submit" class="btn btn-primary">
+        Send enquiry
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
+      </button>
       <p class="form-note" data-form-note hidden>
         Thank you — your enquiry has been noted. (Demo form: not yet connected.)
       </p>
@@ -84,36 +96,37 @@ const { standalone = false } = Astro.props;
 <style>
   /* Clears the fixed header when Contact is the first element on a page. */
   .contact.standalone {
-    padding-top: calc(4.75rem + clamp(3rem, 7vw, 6rem));
+    padding-top: calc(4.5rem + clamp(3rem, 7vw, 6rem));
   }
 
   .contact-layout {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(2.5rem, 6vw, 5.5rem);
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2rem, 5vw, 4rem);
     align-items: start;
   }
 
   .contact-details {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1.8rem 2rem;
+    gap: 1.6rem 1.4rem;
     margin: 2.4rem 0 0;
   }
 
   .contact-details dt {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.2em;
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--blue);
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.4rem;
   }
 
   .contact-details dd {
     margin: 0;
     font-size: 0.98rem;
-    color: var(--text);
+    font-weight: 500;
+    color: var(--heading);
   }
 
   .contact-details a:hover {
@@ -122,37 +135,42 @@ const { standalone = false } = Astro.props;
 
   .contact-form {
     display: grid;
-    gap: 1.2rem;
-    padding: 2.2rem;
+    gap: 1.1rem;
+    padding: clamp(1.6rem, 3vw, 2.4rem);
     background: var(--surface);
     border: 1px solid var(--line-soft);
-    border-radius: var(--r-lg);
+    border-radius: var(--r-md);
     box-shadow: var(--card-shadow);
   }
 
   .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1.2rem;
+    gap: 1.1rem;
   }
 
   label {
     display: grid;
     gap: 0.45rem;
-    font-size: 0.86rem;
-    font-weight: 600;
-    color: var(--heading);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--text-muted);
   }
 
   input,
   textarea {
     font-family: var(--font-sans);
-    font-size: 0.95rem;
+    font-size: 1rem;
+    letter-spacing: normal;
+    text-transform: none;
     color: var(--text);
     background: var(--bg);
     border: 1px solid var(--line);
     border-radius: var(--r-sm);
-    padding: 0.8rem 1rem;
+    padding: 0.7rem 0.85rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
@@ -160,7 +178,6 @@ const { standalone = false } = Astro.props;
   textarea::placeholder {
     color: var(--text-muted);
     opacity: 0.7;
-    font-weight: 400;
   }
 
   input:focus,
@@ -175,7 +192,9 @@ const { standalone = false } = Astro.props;
   }
 
   .contact-form .btn {
-    justify-self: start;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.3rem;
   }
 
   .form-note {
