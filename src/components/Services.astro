@@ -1,5 +1,10 @@
 ---
 import { services } from "../data/services";
+
+// Split showcase: one feature panel driven by a selector rail (desktop) or a
+// horizontal tab strip (mobile). All panels are rendered server-side and the
+// active one is revealed with a small progressive-enhancement script.
+const checkIcon = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`;
 ---
 
 <section class="section services" id="services">
@@ -13,99 +18,455 @@ import { services } from "../data/services";
       </p>
     </div>
 
-    <div class="services-grid">
+    <!-- Mobile-only: horizontal scroll tab strip -->
+    <div class="svc-tabs" role="tablist" aria-label="Services" data-reveal>
       {
-        services.map((s) => (
-          <a class="service-card" href={`/services/${s.slug}`} data-reveal>
-            <span class="service-icon" aria-hidden="true" set:html={s.icon} />
-            <h3>{s.title}</h3>
-            <p>{s.summary}</p>
-            <span class="service-more">
-              Learn more
+        services.map((s, i) => (
+          <button
+            type="button"
+            class:list={["svc-tab", { "is-active": i === 0 }]}
+            data-i={i}
+            role="tab"
+            aria-selected={i === 0 ? "true" : "false"}
+          >
+            <span class="svc-tab-icon" aria-hidden="true" set:html={s.icon} />
+            <span>{s.title}</span>
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="svc-split" data-reveal>
+      <!-- Feature panel stack (only the active panel is shown) -->
+      <div class="svc-feature-stack">
+        {
+          services.map((s, i) => (
+            <article
+              class:list={["svc-feature", { "is-active": i === 0 }]}
+              data-i={i}
+              role="tabpanel"
+              aria-hidden={i === 0 ? "false" : "true"}
+            >
+              <span class="svc-feature-bg" aria-hidden="true">
+                <img src={s.image} alt="" decoding="async" />
+                <span class="svc-feature-overlay" />
+                <span class="svc-feature-grid" />
+              </span>
+              <span class="svc-feature-icon" aria-hidden="true" set:html={s.icon} />
+              <h3 class="svc-feature-title">{s.title}</h3>
+              <p class="svc-feature-sum">{s.summary}</p>
+              <ul class="svc-scope">
+                {s.scope.slice(0, 3).map((item) => (
+                  <li>
+                    <span class="svc-check" aria-hidden="true" set:html={checkIcon} />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <a class="svc-more" href={`/services/${s.slug}`}>
+                Learn more
+                <svg
+                  width="17"
+                  height="17"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+
+      <!-- Desktop-only: vertical selector rail -->
+      <div class="svc-rail" role="tablist" aria-label="Services" data-reveal>
+        {
+          services.map((s, i) => (
+            <button
+              type="button"
+              class:list={["svc-rail-btn", { "is-active": i === 0 }]}
+              data-i={i}
+              role="tab"
+              aria-selected={i === 0 ? "true" : "false"}
+            >
+              <span class="svc-rail-icon" aria-hidden="true" set:html={s.icon} />
+              <span class="svc-rail-label">{s.title}</span>
               <svg
+                class="svc-rail-chevron"
                 width="15"
                 height="15"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2.2"
+                stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
-            </span>
-          </a>
-        ))
-      }
+                aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+            </button>
+          ))
+        }
+      </div>
     </div>
   </div>
 </section>
 
 <style>
-  .services-grid {
+  .svc-split {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.1rem;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 1.4rem;
+    align-items: stretch;
     margin-top: 2.6rem;
   }
 
-  .service-card {
-    display: block;
+  /* ---- Feature panel ---- */
+  .svc-feature-stack {
+    display: grid;
+  }
+
+  .svc-feature {
+    grid-area: 1 / 1;
     position: relative;
-    padding: 1.6rem 1.5rem 1.4rem;
-    background: var(--surface);
-    border: 1px solid var(--line-soft);
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+    background: var(--navy);
     border-radius: var(--r-md);
+    padding: clamp(2rem, 3vw, 2.8rem);
+    min-height: 420px;
     box-shadow: var(--card-shadow);
-    color: inherit;
-    transition: transform 0.3s ease, border-color 0.3s ease;
   }
 
-  .service-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--blue);
+  .svc-feature.is-active {
+    display: flex;
+    animation: svc-fade 0.35s ease;
   }
 
-  .service-card:focus-visible {
-    outline: 2px solid var(--blue);
+  @keyframes svc-fade {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .svc-feature-bg,
+  .svc-feature-bg img,
+  .svc-feature-overlay,
+  .svc-feature-grid {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .svc-feature-bg img {
+    object-fit: cover;
+  }
+
+  .svc-feature-overlay {
+    background: linear-gradient(
+        180deg,
+        rgba(6, 13, 24, 0.6),
+        rgba(6, 13, 24, 0.9)
+      ),
+      linear-gradient(90deg, rgba(11, 37, 69, 0.92), rgba(11, 37, 69, 0.5));
+  }
+
+  .svc-feature-grid {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  .svc-feature > :not(.svc-feature-bg) {
+    position: relative;
+  }
+
+  .svc-feature-icon {
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    background: rgba(26, 99, 214, 0.28);
+    border: 1px solid rgba(120, 170, 255, 0.35);
+    color: #dbe6f7;
+  }
+
+  .svc-feature-title {
+    margin: 1.5rem 0 0.7rem;
+    font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: #eef4fb;
+  }
+
+  .svc-feature-sum {
+    margin: 0 0 1.6rem;
+    color: #a9bcd6;
+    font-size: 1.05rem;
+    max-width: 46ch;
+  }
+
+  .svc-scope {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    margin: 0 0 1.8rem;
+    padding: 1.4rem 0 0;
+    list-style: none;
+    border-top: 1px solid rgba(200, 220, 245, 0.14);
+  }
+
+  .svc-scope li {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: #eef4fb;
+    font-size: 0.96rem;
+  }
+
+  .svc-check {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: var(--r-chip);
+    background: rgba(91, 155, 255, 0.18);
+    color: #5b9bff;
+  }
+
+  .svc-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    align-self: flex-start;
+    margin-top: auto;
+    padding: 0.85rem 1.5rem;
+    background: var(--blue);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: var(--r-chip);
+    transition: transform 0.25s ease, background 0.25s ease;
+  }
+
+  .svc-more svg {
+    transition: transform 0.25s ease;
+  }
+
+  .svc-more:hover {
+    background: #1655bb;
+  }
+
+  .svc-more:hover svg {
+    transform: translateX(4px);
+  }
+
+  .svc-more:focus-visible {
+    outline: 2px solid #dbe6f7;
     outline-offset: 3px;
   }
 
-  .service-icon {
+  /* ---- Vertical selector rail (desktop) ---- */
+  .svc-rail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .svc-rail-btn {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem 1.1rem;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid var(--line);
+    border-left: 3px solid transparent;
+    border-radius: 12px;
+    box-shadow: none;
+    transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .svc-rail-btn.is-active {
+    background: var(--surface);
+    border-color: var(--blue);
+    border-left-color: var(--blue);
+    box-shadow: var(--card-shadow);
+  }
+
+  .svc-rail-icon {
+    flex: none;
     display: grid;
     place-items: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    border-radius: 12px;
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+    background: var(--blue-soft);
+    color: var(--blue);
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+
+  .svc-rail-btn.is-active .svc-rail-icon {
+    background: var(--blue);
+    color: #fff;
+  }
+
+  .svc-rail-label {
+    font-weight: 600;
+    font-size: 1.05rem;
+    text-align: left;
+    color: var(--heading);
+  }
+
+  .svc-rail-chevron {
+    color: var(--line);
+    transition: color 0.25s ease, transform 0.25s ease;
+  }
+
+  .svc-rail-btn.is-active .svc-rail-chevron {
+    color: var(--blue);
+    transform: translateX(2px);
+  }
+
+  .svc-rail-btn:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
+
+  /* ---- Horizontal tab strip (mobile) ---- */
+  .svc-tabs {
+    display: none;
+    gap: 0.55rem;
+    margin-top: 2.4rem;
+    padding-bottom: 0.6rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .svc-tab {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.85rem 0.5rem 0.5rem;
+    cursor: pointer;
+    background: var(--surface);
+    color: var(--heading);
+    border: 1px solid var(--line);
+    border-radius: var(--r-chip);
+    white-space: nowrap;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: none;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .svc-tab.is-active {
+    background: var(--navy);
+    color: #eef4fb;
+    border-color: var(--navy);
+    box-shadow: var(--card-shadow);
+  }
+
+  .svc-tab-icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--r-chip);
     background: var(--blue-soft);
     color: var(--blue);
   }
 
-  .service-card h3 {
-    font-size: 1.22rem;
-    font-weight: 600;
-    margin: 1.1rem 0 0.5rem;
+  .svc-tab.is-active .svc-tab-icon {
+    background: rgba(120, 170, 255, 0.28);
+    color: #dbe6f7;
   }
 
-  .service-card p {
-    font-size: 0.98rem;
-    color: var(--text-muted);
+  .svc-tab:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
   }
 
-  .service-more {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-top: 1rem;
-    font-size: 0.92rem;
-    font-weight: 600;
-    color: var(--blue);
+  /* ---- Responsive ---- */
+  @media (max-width: 860px) {
+    .svc-split {
+      grid-template-columns: 1fr;
+      margin-top: 1.3rem;
+    }
+
+    .svc-rail {
+      display: none;
+    }
+
+    .svc-tabs {
+      display: flex;
+    }
   }
 
-  .service-more svg {
-    transition: transform 0.25s ease;
-  }
-
-  .service-card:hover .service-more svg {
-    transform: translateX(4px);
+  @media (prefers-reduced-motion: reduce) {
+    .svc-feature.is-active {
+      animation: none;
+    }
   }
 </style>
+
+<script>
+  function initServiceShowcase() {
+    const section = document.getElementById("services");
+    if (!section) return;
+
+    const panels = section.querySelectorAll<HTMLElement>(".svc-feature");
+    const railBtns = section.querySelectorAll<HTMLElement>(".svc-rail-btn");
+    const tabs = section.querySelectorAll<HTMLElement>(".svc-tab");
+
+    function setActive(index: number) {
+      panels.forEach((el) => {
+        const on = Number(el.dataset.i) === index;
+        el.classList.toggle("is-active", on);
+        el.setAttribute("aria-hidden", on ? "false" : "true");
+      });
+      [railBtns, tabs].forEach((group) => {
+        group.forEach((el) => {
+          const on = Number(el.dataset.i) === index;
+          el.classList.toggle("is-active", on);
+          el.setAttribute("aria-selected", on ? "true" : "false");
+        });
+      });
+    }
+
+    // Rail: click + hover-to-preview
+    const rail = section.querySelector(".svc-rail");
+    rail?.addEventListener("click", (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLElement>(".svc-rail-btn");
+      if (btn) setActive(Number(btn.dataset.i));
+    });
+    rail?.addEventListener("mouseover", (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLElement>(".svc-rail-btn");
+      if (btn) setActive(Number(btn.dataset.i));
+    });
+
+    // Tabs: click only
+    section.querySelector(".svc-tabs")?.addEventListener("click", (e) => {
+      const tab = (e.target as HTMLElement).closest<HTMLElement>(".svc-tab");
+      if (tab) setActive(Number(tab.dataset.i));
+    });
+  }
+
+  initServiceShowcase();
+  document.addEventListener("astro:page-load", initServiceShowcase);
+</script>
